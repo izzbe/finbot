@@ -1,0 +1,35 @@
+services:
+  historical_db:
+    image: timescale/timescaledb:latest-pg16   # the image to pull
+    container_name: finbot_db                  # optional, easier to reference
+    restart: unless-stopped                    # restart on crash, not on explicit stop
+    ports:
+      - "5432:5432"                            # host:container — lets you connect from your machine
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - pgdata:/var/lib/postgresql/data        # named volume → mount path inside container
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  historical_db_setup:
+    build:
+      context: .
+      dockerfile: services/historical-data-service/setup/Dockerfile
+    restart: "no"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST=historical_db
+    depends_on:
+      historical_db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
