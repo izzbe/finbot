@@ -1,6 +1,7 @@
 import logging
 import sys
 
+
 def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     logger = logging.getLogger(name)
 
@@ -16,4 +17,3 @@ def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
 
     logger.setLevel(level)
     return logger
-

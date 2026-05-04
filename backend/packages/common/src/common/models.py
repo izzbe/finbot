@@ -1,5 +1,15 @@
-from pydantic import ConfigDict, BaseModel, PositiveInt, PositiveFloat, Field, field_validator, model_validator
 from datetime import datetime, timezone
+
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    PositiveFloat,
+    PositiveInt,
+    field_validator,
+    model_validator,
+)
+
 
 class Bar(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
@@ -20,6 +30,7 @@ class Bar(BaseModel):
             return value
         return datetime.fromtimestamp(value / 1000, tz=timezone.utc)
 
+
 class BarDataRequest(BaseModel):
     symbol: str
     start: datetime
@@ -35,7 +46,6 @@ class BarDataRequest(BaseModel):
             raise ValueError(f"level must be one of {allowed}")
         return value
 
-
     @model_validator(mode="after")
     def check_start_before_end(self):
         if self.end is None:
@@ -43,6 +53,3 @@ class BarDataRequest(BaseModel):
         if self.start > self.end:
             raise ValueError("Start time must be before end time")
         return self
-
-
-

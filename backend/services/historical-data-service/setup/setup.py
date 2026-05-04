@@ -1,5 +1,6 @@
-import psycopg2
 import os
+
+import psycopg2
 
 DDL = """
 CREATE EXTENSION IF NOT EXISTS timescaledb;
@@ -25,12 +26,13 @@ CREATE INDEX IF NOT EXISTS ohlcv_symbol_ts_idx
 """
 
 if __name__ == "__main__":
-    conn = psycopg2.connect(dbname=os.environ["POSTGRES_DB"],
-                            user=os.environ["POSTGRES_USER"],
-                            password=os.environ["POSTGRES_PASSWORD"],
-                            host=os.environ["POSTGRES_HOST"],
-                            port=5432
-                            )
+    conn = psycopg2.connect(
+        dbname=os.environ["POSTGRES_DB"],
+        user=os.environ["POSTGRES_USER"],
+        password=os.environ["POSTGRES_PASSWORD"],
+        host=os.environ["POSTGRES_HOST"],
+        port=5432,
+    )
 
     try:
         with conn:
