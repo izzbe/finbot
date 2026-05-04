@@ -30,6 +30,20 @@ services:
     depends_on:
       historical_db:
         condition: service_healthy
-
+  historical_api:
+    build:
+      context: .
+      dockerfile: services/historical-data-service/api/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - MASSIVE_API_KEY
+      - POSTGRES_HOST=historical_db
+    depends_on:
+      historical_db:
+        condition: service_healthy
 volumes:
   pgdata:

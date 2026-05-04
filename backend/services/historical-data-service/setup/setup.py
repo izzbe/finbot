@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS ohlcv (
     low NUMERIC,
     volume NUMERIC,
     num_transactions INT,
+    volume_weighted_average_price NUMERIC,
     PRIMARY KEY (symbol, ts)
 ) WITH (
   timescaledb.hypertable,

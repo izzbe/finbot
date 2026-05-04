@@ -19,3 +19,9 @@ select = [
     "F",   # pyflakes
     "I",   # isort
 ]
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+    "lab>=8.9",
+]
